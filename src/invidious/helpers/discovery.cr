@@ -13,7 +13,7 @@ module Invidious::Discovery
   # simply sorting by views.
   def score(video, now : Time = Time.utc) : Float64
     age_hours = Math.max((now - video.published).total_hours, 0.0)
-    freshness = Math.pow(0.5, age_hours / FRESHNESS_HALFLIFE_HOURS)
+    freshness = 0.5 ** (age_hours / FRESHNESS_HALFLIFE_HOURS)
 
     views = video.responds_to?(:views) ? (video.views || 0_i64) : 0_i64
     popularity = Math.log(views.to_f + 2.0)
@@ -31,7 +31,7 @@ module Invidious::Discovery
 
     keyed = videos.map do |video|
       weight = Math.max(score(video, now), 0.001)
-      key = Math.pow(Random.rand.to_f, 1.0 / weight)
+      key = Random.rand.to_f ** (1.0 / weight)
       {key, video}
     end
 
