@@ -30,7 +30,7 @@
 <% content_for "header" do %>
 <%- if selected_tab.videos? -%>
 <meta name="description" content="<%= channel.description %>">
-<meta property="og:site_name" content="Invidious">
+<meta property="og:site_name" content="DTUBE">
 <meta property="og:url" content="<%= HOST_URL %>/channel/<%= ucid %>">
 <meta property="og:title" content="<%= author %>">
 <meta property="og:image" content="<%= HOST_URL %>/ggpht<%= channel_profile_pic %>">
@@ -46,7 +46,7 @@
 <script src="/js/pagination.js?v=<%= ASSET_COMMIT %>"></script>
 
 <link rel="alternate" href="<%= youtube_url %>">
-<title><%= author %> - Invidious</title>
+<title><%= author %> - DTUBE</title>
 <% end %>
 
 <%= rendered "components/channel_info" %>
