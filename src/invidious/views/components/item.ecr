@@ -124,7 +124,7 @@
               end
             -%>
 
-            <div class="thumbnail">
+            <div class="thumbnail" data-video-id="<%= item.id %>" data-ucid="<%= item.ucid.to_s %>" data-length-seconds="<%= item.length_seconds %>" data-published="<%= item.responds_to?(:published) ? item.published.to_unix : "" %>">
                 <%- if !thin_mode -%>
                     <a tabindex="-1" href="<%= link_url %>">
                         <img loading="lazy" class="thumbnail" src="/vi/<%= item.id %>/mqdefault.jpg" alt="" />

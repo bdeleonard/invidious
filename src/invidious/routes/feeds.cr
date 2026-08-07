@@ -35,6 +35,17 @@ module Invidious::Routes::Feeds
     locale = env.get("preferences").as(Preferences).locale
 
     if CONFIG.popular_enabled
+      pool = popular_videos
+
+      # Sections are all derived from the same in-memory pool (refreshed
+      # every minute by PullPopularVideosJob) - no extra DB queries or
+      # calls to YouTube are made here. The weighted sample is recomputed
+      # per-request (cheap on a few hundred items) so the feed doesn't
+      # look identical on every visit/refresh.
+      popular_today = Invidious::Discovery.weighted_sample(pool, 24)
+      new_and_rising = Invidious::Discovery.recent(pool, within: 2.days, limit: 12)
+      popular_channels = Invidious::Discovery.top_channels(pool, 12)
+
       templated "feeds/popular"
     else
       message = I18n.translate(locale, "The Popular feed has been disabled by the administrator.")

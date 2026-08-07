@@ -1,7 +1,34 @@
+# Trending is fetched live from YouTube (there's no local dataset for it),
+# so repeated page loads/API polls would otherwise hit YouTube every time.
+# Cache each (type, region) result for a few minutes to stay resilient
+# under load and avoid hammering YouTube, while still feeling "live" - the
+# trending list itself doesn't meaningfully change minute to minute.
+TRENDING_CACHE_TTL = 5.minutes
+private TRENDING_CACHE = {} of String => {Time, Array(SearchVideo | ProblematicTimelineItem)}
+private TRENDING_CACHE_MUTEX = Mutex.new
+
 def fetch_trending(trending_type, region, locale)
   region ||= "US"
   region = region.upcase
+  cache_key = "#{trending_type.try &.downcase}:#{region}"
 
+  TRENDING_CACHE_MUTEX.synchronize do
+    if entry = TRENDING_CACHE[cache_key]?
+      cached_at, cached_items = entry
+      return cached_items, nil if (Time.utc - cached_at) < TRENDING_CACHE_TTL
+    end
+  end
+
+  extracted, plid = fetch_trending_live(trending_type, region, locale)
+
+  TRENDING_CACHE_MUTEX.synchronize do
+    TRENDING_CACHE[cache_key] = {Time.utc, extracted}
+  end
+
+  return extracted, plid
+end
+
+private def fetch_trending_live(trending_type, region, locale)
   plid = nil
 
   browse_id = ""

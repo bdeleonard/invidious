@@ -1,0 +1,21 @@
+<%-
+  # Reusable modular section for the discovery feeds (Popular/Trending).
+  # Callers must set these locals immediately before rendering this partial:
+  #   section_title    : String
+  #   section_items    : Enumerable of renderable items (SearchItem-like)
+  #   section_scroll   : Bool - horizontal scroll row instead of a grid
+  #   section_subtitle : String? - optional subtitle line
+-%>
+<% if !section_items.empty? %>
+<section class="discovery-section">
+    <div class="discovery-section__header">
+        <h3><%= section_title %></h3>
+        <% if section_subtitle %><p class="discovery-section__subtitle"><%= section_subtitle %></p><% end %>
+    </div>
+    <div class="pure-g <% if section_scroll %>discovery-section__row<% end %>">
+        <% section_items.each do |item| %>
+            <%= rendered "components/item" %>
+        <% end %>
+    </div>
+</section>
+<% end %>

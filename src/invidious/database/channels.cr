@@ -144,15 +144,26 @@ module Invidious::Database::ChannelVideos
     return PG_DB.query_all(request, ucid, since, as: ChannelVideo)
   end
 
-  def select_popular_videos : Array(ChannelVideo)
+  # Pool of recent videos from the most-subscribed channels (as seen by this
+  # instance's users). Widened to the top 60 channels with up to 4 recent
+  # videos each (instead of a single video per channel) so the "Popular"
+  # feed has enough material to score/shuffle from without any extra calls
+  # to YouTube - it's still a single, cheap, indexed query.
+  def select_popular_videos(channel_limit : Int32 = 60, videos_per_channel : Int32 = 4) : Array(ChannelVideo)
     request = <<-SQL
-      SELECT DISTINCT ON (ucid) *
-      FROM channel_videos
-      WHERE ucid IN (SELECT channel FROM (SELECT UNNEST(subscriptions) AS channel FROM users) AS d
-      GROUP BY channel ORDER BY COUNT(channel) DESC LIMIT 40)
-      ORDER BY ucid, published DESC
+      SELECT id, title, published, updated, ucid, author, length_seconds, live_now, premiere_timestamp, views
+      FROM (
+        SELECT *, ROW_NUMBER() OVER (PARTITION BY ucid ORDER BY published DESC) AS rn
+        FROM channel_videos
+        WHERE ucid IN (
+          SELECT channel FROM (SELECT UNNEST(subscriptions) AS channel FROM users) AS d
+          GROUP BY channel ORDER BY COUNT(channel) DESC LIMIT $1
+        )
+      ) ranked
+      WHERE rn <= $2
+      ORDER BY published DESC
     SQL
 
-    PG_DB.query_all(request, as: ChannelVideo)
+    PG_DB.query_all(request, channel_limit, videos_per_channel, as: ChannelVideo)
   end
 end

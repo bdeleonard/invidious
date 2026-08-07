@@ -1,0 +1,145 @@
+/*
+ * discovery.css
+ * ------------------------------------------------------------------------
+ * Additive enhancements for the Popular/Trending discovery feeds only.
+ * Scoped under `.discovery-feed` / `.discovery-section` so it never
+ * affects other pages. Builds on the CSS variables from custom-theme.css
+ * where available, with sane fallbacks.
+ * ------------------------------------------------------------------------
+ */
+
+.discovery-feed {
+  position: relative;
+}
+
+/* -------------------------------------------------------------------- */
+/*  Sections                                                             */
+/* -------------------------------------------------------------------- */
+
+.discovery-section {
+  width: 100%;
+  margin: 0 0 1.5rem 0;
+}
+
+.discovery-section__header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.discovery-section__header h3 {
+  margin: 0.4rem 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.discovery-section__subtitle {
+  margin: 0;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* Horizontal-scrolling row variant, pure CSS (no JS needed for scrolling).
+   Pure.css' `.pure-g` normally uses an inline-block/letter-spacing trick,
+   so this switches that particular row to flexbox. */
+.discovery-section__row {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  padding-bottom: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.discovery-section__row > * {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+  width: 85%;
+}
+
+@media (min-width: 48em) {
+  .discovery-section__row > * { width: 40%; }
+}
+
+@media (min-width: 64em) {
+  .discovery-section__row > * { width: 23%; }
+}
+
+/* -------------------------------------------------------------------- */
+/*  Card hover interactions (scoped to discovery feeds)                  */
+/* -------------------------------------------------------------------- */
+
+.discovery-feed .thumbnail {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  border-radius: 6px;
+}
+
+.discovery-feed .h-box:hover .thumbnail {
+  transform: translateY(-2px) scale(1.015);
+  box-shadow: var(--iv-shadow-md, 0 4px 16px rgba(0, 0, 0, 0.25));
+}
+
+/* -------------------------------------------------------------------- */
+/*  Personalization: "familiar channel" ribbon                          */
+/* -------------------------------------------------------------------- */
+
+.iv-familiar-channel {
+  outline: 2px solid var(--iv-accent, #3ea6ff);
+  outline-offset: -2px;
+}
+
+.iv-familiar-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  padding: 2px 6px;
+  font-size: 0.7rem;
+  border-radius: 4px;
+  background: var(--iv-accent, #3ea6ff);
+  color: #fff;
+  pointer-events: none;
+}
+
+/* -------------------------------------------------------------------- */
+/*  "Hide watched" toggle + watched videos                              */
+/* -------------------------------------------------------------------- */
+
+.discovery-hide-watched {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  margin: 0 0 0.75rem 0.5rem;
+  cursor: pointer;
+}
+
+.discovery-feed.iv-hide-watched .iv-watched-video {
+  display: none;
+}
+
+/* -------------------------------------------------------------------- */
+/*  "N new videos available" banner                                     */
+/* -------------------------------------------------------------------- */
+
+.discovery-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  margin: 0 0.5rem 1rem 0.5rem;
+  border-radius: 8px;
+  background: var(--iv-surface-raised, #272727);
+  color: var(--iv-text, inherit);
+  box-shadow: var(--iv-shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.25));
+  animation: iv-discovery-banner-in 0.2s ease;
+}
+
+@keyframes iv-discovery-banner-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}

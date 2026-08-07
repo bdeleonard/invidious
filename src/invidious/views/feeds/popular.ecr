@@ -11,10 +11,25 @@
 
 <%= rendered "components/feed_menu" %>
 
-<div class="pure-g">
-<% popular_videos.each do |item| %>
-    <%= rendered "components/item" %>
-<% end %>
+<div class="discovery-feed" data-discovery-feed data-api-endpoint="/api/v1/popular" data-new-videos-label="<%= I18n.translate(locale, "discovery_new_videos_available") %>" data-refresh-label="<%= I18n.translate(locale, "discovery_refresh_button") %>" data-hide-watched-label="<%= I18n.translate(locale, "discovery_hide_watched") %>" data-familiar-label="<%= I18n.translate(locale, "discovery_familiar_channel") %>">
+    <% section_title = I18n.translate(locale, "discovery_section_new_and_rising") %>
+    <% section_items = new_and_rising %>
+    <% section_scroll = true %>
+    <% section_subtitle = nil %>
+    <%= rendered "components/discovery_section" %>
+
+    <% section_title = I18n.translate(locale, "discovery_section_popular_today") %>
+    <% section_items = popular_today %>
+    <% section_scroll = false %>
+    <% section_subtitle = nil %>
+    <%= rendered "components/discovery_section" %>
+
+    <% section_title = I18n.translate(locale, "discovery_section_popular_channels") %>
+    <% section_items = popular_channels %>
+    <% section_scroll = true %>
+    <% section_subtitle = nil %>
+    <%= rendered "components/discovery_section" %>
 </div>
 
 <script src="/js/watched_indicator.js"></script>
+<script src="/js/discovery.js?v=<%= ASSET_COMMIT %>" defer></script>
