@@ -23,6 +23,9 @@
     <link rel="stylesheet" href="/css/ionicons.min.css?v=<%= ASSET_COMMIT %>">
     <link rel="stylesheet" href="/css/default.css?v=<%= ASSET_COMMIT %>">
     <link rel="stylesheet" href="/css/carousel.css?v=<%= ASSET_COMMIT %>">
+    <!-- Custom fork: additive modern theme/UX layer, kept separate for easy upstream merges -->
+    <link rel="stylesheet" href="/css/custom-theme.css?v=<%= ASSET_COMMIT %>">
+    <link rel="stylesheet" href="/css/video-enhancements.css?v=<%= ASSET_COMMIT %>">
     <script src="/js/_helpers.js?v=<%= ASSET_COMMIT %>"></script>
 </head>
 
@@ -176,6 +179,8 @@
     </div>
     <script src="/js/handlers.js?v=<%= ASSET_COMMIT %>"></script>
     <script src="/js/themes.js?v=<%= ASSET_COMMIT %>"></script>
+    <script src="/js/ui-enhancements.js?v=<%= ASSET_COMMIT %>"></script>
+    <script src="/js/navigation.js?v=<%= ASSET_COMMIT %>"></script>
     <% if env.get? "user" %>
         <script src="/js/sse.js?v=<%= ASSET_COMMIT %>"></script>
         <script id="notification_data" type="application/json">

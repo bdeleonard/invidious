@@ -1,0 +1,264 @@
+/*
+ * video-enhancements.css
+ * ------------------------------------------------------------------------
+ * Watch-page specific modernization: player chrome, theater mode, floating
+ * prev/next controls and a cleaner metadata layout. Purely additive on top
+ * of default.css / player.css - no existing selectors are overridden
+ * destructively, only refined.
+ * ------------------------------------------------------------------------
+ */
+
+/* -------------------------------------------------------------------- */
+/*  Player container                                                     */
+/* -------------------------------------------------------------------- */
+
+#player-container {
+  position: relative;
+  border-radius: var(--iv-radius-md, 12px);
+  overflow: hidden;
+  background: #000;
+  box-shadow: var(--iv-shadow-md, 0 4px 16px rgba(0, 0, 0, 0.35));
+  transition: max-width 260ms ease;
+}
+
+/* Keep the player in view while reading the description/comments below,
+   on screens wide enough that it doesn't fight for space. */
+@media screen and (min-width: 1024px) {
+  #player-container {
+    position: sticky;
+    top: 0.5em;
+    z-index: 50;
+  }
+}
+
+/* -------------------------------------------------------------------- */
+/*  Theater mode (toggled by navigation.js, persisted in localStorage)   */
+/* -------------------------------------------------------------------- */
+
+body.iv-theater #contents {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+body.iv-theater #player-container ~ .pure-g > .pure-u-lg-1-5 {
+  display: none;
+}
+
+body.iv-theater #player-container ~ .pure-g > .pure-u-lg-3-5 {
+  width: 100% !important;
+}
+
+#iv-theater-toggle {
+  position: absolute;
+  top: 0.6em;
+  right: 0.6em;
+  z-index: 60;
+  background: rgba(20, 20, 20, 0.65);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  width: 2.2em;
+  height: 2.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--iv-transition-fast, 120ms ease), transform var(--iv-transition-fast, 120ms ease);
+}
+
+#player-container:hover #iv-theater-toggle,
+#iv-theater-toggle:focus-visible {
+  opacity: 1;
+}
+
+#iv-theater-toggle:hover {
+  transform: scale(1.08);
+}
+
+/* -------------------------------------------------------------------- */
+/*  Floating previous/next controls                                     */
+/* -------------------------------------------------------------------- */
+
+.iv-watch-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 55;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6em;
+  height: 2.6em;
+  border-radius: 50%;
+  border: none;
+  background: rgba(20, 20, 20, 0.55);
+  color: #fff;
+  font-size: 1.3em;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--iv-transition-fast, 120ms ease), background-color var(--iv-transition-fast, 120ms ease),
+    transform var(--iv-transition-fast, 120ms ease);
+}
+
+#player-container:hover .iv-watch-nav,
+.iv-watch-nav:focus-visible {
+  opacity: 0.85;
+}
+
+.iv-watch-nav:hover {
+  opacity: 1 !important;
+  background: rgba(20, 20, 20, 0.85);
+}
+
+.iv-watch-nav:active {
+  transform: translateY(-50%) scale(0.92);
+}
+
+.iv-watch-nav.iv-prev { left: 0.6em; }
+.iv-watch-nav.iv-next { right: 0.6em; }
+
+.iv-watch-nav[hidden] {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .iv-watch-nav {
+    opacity: 0.7;
+    width: 2.2em;
+    height: 2.2em;
+    font-size: 1.1em;
+  }
+}
+
+/* -------------------------------------------------------------------- */
+/*  Video.js control bar - lightweight "floating glass" styling          */
+/* -------------------------------------------------------------------- */
+
+.video-js .vjs-control-bar {
+  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6));
+  backdrop-filter: blur(6px);
+}
+
+.video-js .vjs-button > .vjs-icon-placeholder:before {
+  transition: transform var(--iv-transition-fast, 120ms ease);
+}
+
+.video-js .vjs-button:hover > .vjs-icon-placeholder:before {
+  transform: scale(1.15);
+}
+
+/* Bigger, more touch-friendly controls on small screens / touch devices */
+@media (pointer: coarse) {
+  .video-js .vjs-control-bar {
+    font-size: 1.4em;
+  }
+}
+
+/* -------------------------------------------------------------------- */
+/*  Metadata layout                                                      */
+/* -------------------------------------------------------------------- */
+
+.channel-profile {
+  transition: transform var(--iv-transition-fast, 120ms ease);
+}
+
+.channel-profile > img {
+  box-shadow: var(--iv-shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.35));
+}
+
+#description-box {
+  border-radius: var(--iv-radius-md, 12px);
+  background: var(--iv-surface, transparent);
+  padding: 0.9em 1em;
+  margin: 0.6em 0;
+}
+
+#views, #likes, #genre, #license, #family_friendly {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.3em 0.75em;
+  margin: 0 0.4em 0.5em 0;
+  border-radius: 999px;
+  background: var(--iv-surface, rgba(128, 128, 128, 0.12));
+  font-size: 0.92em;
+}
+
+.pure-u-lg-1-5 > .h-box {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+/* -------------------------------------------------------------------- */
+/*  Keyboard shortcuts / quick-nav overlay                               */
+/* -------------------------------------------------------------------- */
+
+#iv-shortcuts-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--iv-transition, 200ms ease);
+}
+
+#iv-shortcuts-overlay.iv-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#iv-shortcuts-overlay .iv-panel {
+  background: var(--iv-surface-raised, #272727);
+  color: var(--iv-text, #f1f1f1);
+  border-radius: var(--iv-radius-lg, 18px);
+  padding: 1.5em 2em;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: var(--iv-shadow-md, 0 4px 16px rgba(0, 0, 0, 0.35));
+  transform: scale(0.96);
+  transition: transform var(--iv-transition, 200ms ease);
+}
+
+#iv-shortcuts-overlay.iv-visible .iv-panel {
+  transform: scale(1);
+}
+
+#iv-shortcuts-overlay dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5em 1em;
+  margin: 1em 0 0 0;
+}
+
+#iv-shortcuts-overlay dt {
+  font-family: monospace;
+  background: rgba(128, 128, 128, 0.2);
+  border-radius: 4px;
+  padding: 0.1em 0.5em;
+  justify-self: start;
+}
+
+#iv-shortcuts-overlay dd {
+  margin: 0;
+}
+
+/* -------------------------------------------------------------------- */
+/*  Mobile-first refinements                                             */
+/* -------------------------------------------------------------------- */
+
+@media screen and (max-width: 767px) {
+  #player-container {
+    border-radius: 0;
+  }
+
+  #description-box {
+    padding: 0.7em 0.8em;
+  }
+}

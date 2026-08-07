@@ -1,0 +1,397 @@
+/*
+ * custom-theme.css
+ * ------------------------------------------------------------------------
+ * Additive modernization layer for Invidious.
+ * This file does NOT replace default.css: it only refines colors, spacing,
+ * shadows, motion and card/button presentation on top of the existing
+ * theme classes (body.dark-theme / .light-theme / .no-theme) so upstream
+ * merges of default.css remain conflict-free.
+ * ------------------------------------------------------------------------
+ */
+
+/* -------------------------------------------------------------------- */
+/*  Design tokens                                                        */
+/* -------------------------------------------------------------------- */
+
+body.dark-theme {
+  --iv-bg: #181818;
+  --iv-surface: #212121;
+  --iv-surface-raised: #272727;
+  --iv-border: rgba(255, 255, 255, 0.08);
+  --iv-text: #f1f1f1;
+  --iv-text-secondary: #aaaaaa;
+  --iv-accent: #3ea6ff;
+  --iv-accent-strong: #065fd4;
+  --iv-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --iv-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --iv-shimmer-base: #2a2a2a;
+  --iv-shimmer-shine: #363636;
+  --iv-scrollbar-thumb: #4d4d4d;
+}
+
+body.light-theme {
+  --iv-bg: #f8f9fa;
+  --iv-surface: #ffffff;
+  --iv-surface-raised: #ffffff;
+  --iv-border: rgba(0, 0, 0, 0.08);
+  --iv-text: #202020;
+  --iv-text-secondary: #5f5f5f;
+  --iv-accent: #075a9e;
+  --iv-accent-strong: #0b57a4;
+  --iv-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --iv-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --iv-shimmer-base: #ececec;
+  --iv-shimmer-shine: #f6f6f6;
+  --iv-scrollbar-thumb: #c7c7c7;
+}
+
+/* prefers-color-scheme fallback for the "no-theme" (auto) mode */
+@media (prefers-color-scheme: dark) {
+  body.no-theme {
+    --iv-bg: #181818;
+    --iv-surface: #212121;
+    --iv-surface-raised: #272727;
+    --iv-border: rgba(255, 255, 255, 0.08);
+    --iv-text: #f1f1f1;
+    --iv-text-secondary: #aaaaaa;
+    --iv-accent: #3ea6ff;
+    --iv-accent-strong: #065fd4;
+    --iv-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+    --iv-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35);
+    --iv-shimmer-base: #2a2a2a;
+    --iv-shimmer-shine: #363636;
+    --iv-scrollbar-thumb: #4d4d4d;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  body.no-theme {
+    --iv-bg: #f8f9fa;
+    --iv-surface: #ffffff;
+    --iv-surface-raised: #ffffff;
+    --iv-border: rgba(0, 0, 0, 0.08);
+    --iv-text: #202020;
+    --iv-text-secondary: #5f5f5f;
+    --iv-accent: #075a9e;
+    --iv-accent-strong: #0b57a4;
+    --iv-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08);
+    --iv-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --iv-shimmer-base: #ececec;
+    --iv-shimmer-shine: #f6f6f6;
+    --iv-scrollbar-thumb: #c7c7c7;
+  }
+}
+
+:root {
+  --iv-radius-sm: 8px;
+  --iv-radius-md: 12px;
+  --iv-radius-lg: 18px;
+  --iv-transition-fast: 120ms ease;
+  --iv-transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* -------------------------------------------------------------------- */
+/*  Base surface                                                         */
+/* -------------------------------------------------------------------- */
+
+body.dark-theme,
+body.light-theme,
+body.no-theme {
+  background-color: var(--iv-bg);
+  transition: background-color var(--iv-transition);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Gentle fade-in for every page load (see navigation.js for transitions) */
+body.dark-theme, body.light-theme, body.no-theme {
+  animation: iv-page-in 260ms ease;
+}
+
+@keyframes iv-page-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Top loading bar used during navigation (populated by navigation.js) */
+#iv-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2.5px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--iv-accent), var(--iv-accent-strong));
+  z-index: 10000;
+  opacity: 0;
+  transition: width 400ms ease, opacity 200ms ease;
+  pointer-events: none;
+}
+
+#iv-progress-bar.iv-active {
+  opacity: 1;
+}
+
+/* -------------------------------------------------------------------- */
+/*  Scrollbar                                                            */
+/* -------------------------------------------------------------------- */
+
+body.dark-theme, body.light-theme, body.no-theme {
+  scrollbar-width: thin;
+  scrollbar-color: var(--iv-scrollbar-thumb) transparent;
+}
+
+body.dark-theme ::-webkit-scrollbar,
+body.light-theme ::-webkit-scrollbar,
+body.no-theme ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+body.dark-theme ::-webkit-scrollbar-thumb,
+body.light-theme ::-webkit-scrollbar-thumb,
+body.no-theme ::-webkit-scrollbar-thumb {
+  background-color: var(--iv-scrollbar-thumb);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+/* -------------------------------------------------------------------- */
+/*  Navbar                                                               */
+/* -------------------------------------------------------------------- */
+
+body.dark-theme .navbar,
+body.light-theme .navbar,
+body.no-theme .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  background-color: var(--iv-bg);
+  padding: 0.5em 0;
+  transition: box-shadow var(--iv-transition), background-color var(--iv-transition);
+}
+
+/* Added by ui-enhancements.js once the page has scrolled a bit */
+body.iv-scrolled .navbar {
+  box-shadow: var(--iv-shadow-sm);
+}
+
+.searchbar input[type="search"] {
+  border-radius: var(--iv-radius-lg) !important;
+  border: 1px solid var(--iv-border) !important;
+  padding: 0.5em 1em !important;
+  background-color: var(--iv-surface);
+  color: var(--iv-text);
+  transition: border-color var(--iv-transition-fast), box-shadow var(--iv-transition-fast);
+}
+
+.searchbar input[type="search"]:focus {
+  border-color: var(--iv-accent) !important;
+  /* rgba fallback for browsers without color-mix() support */
+  box-shadow: 0 0 0 3px rgba(62, 166, 255, 0.25);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--iv-accent) 25%, transparent);
+}
+
+.searchbar #searchbutton {
+  border-radius: 50%;
+  transition: background-color var(--iv-transition-fast), color var(--iv-transition-fast);
+}
+
+.searchbar #searchbutton:hover {
+  background-color: var(--iv-surface-raised);
+}
+
+/* -------------------------------------------------------------------- */
+/*  Buttons                                                              */
+/* -------------------------------------------------------------------- */
+
+.pure-button-primary,
+.pure-button-secondary {
+  border-radius: var(--iv-radius-sm) !important;
+  transition: transform var(--iv-transition-fast), box-shadow var(--iv-transition-fast),
+    background-color var(--iv-transition-fast), border-color var(--iv-transition-fast);
+}
+
+.pure-button-primary:active,
+.pure-button-secondary:active {
+  transform: scale(0.96);
+}
+
+.pure-button-primary:hover,
+.pure-button-secondary:not(.low-profile):hover {
+  box-shadow: var(--iv-shadow-sm);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+summary:focus-visible,
+.pure-button:focus-visible {
+  outline: 2px solid var(--iv-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* -------------------------------------------------------------------- */
+/*  Video / card thumbnails                                              */
+/* -------------------------------------------------------------------- */
+
+div.thumbnail {
+  border-radius: var(--iv-radius-md);
+  overflow: hidden;
+  background-color: var(--iv-shimmer-base);
+  transition: box-shadow var(--iv-transition), transform var(--iv-transition);
+}
+
+div.thumbnail:hover {
+  box-shadow: var(--iv-shadow-md);
+}
+
+img.thumbnail {
+  transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1), opacity var(--iv-transition);
+}
+
+div.thumbnail:hover img.thumbnail {
+  transform: scale(1.045);
+}
+
+/* Skeleton shimmer while a thumbnail hasn't finished loading yet
+   (class toggled by ui-enhancements.js) */
+img.thumbnail.iv-loading {
+  opacity: 0;
+}
+
+div.thumbnail.iv-loading {
+  background: linear-gradient(
+    100deg,
+    var(--iv-shimmer-base) 30%,
+    var(--iv-shimmer-shine) 50%,
+    var(--iv-shimmer-base) 70%
+  );
+  background-size: 200% 100%;
+  animation: iv-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes iv-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.thumbnail-placeholder {
+  border-radius: var(--iv-radius-md);
+  border-color: var(--iv-border) !important;
+}
+
+.length,
+.top-left-overlay button {
+  border-radius: var(--iv-radius-sm);
+  backdrop-filter: blur(4px);
+}
+
+/* Subtle play affordance on hover, CSS-only (no extra network requests) */
+div.thumbnail::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.35), transparent 45%);
+  opacity: 0;
+  transition: opacity var(--iv-transition-fast);
+  pointer-events: none;
+}
+
+div.thumbnail:hover::after {
+  opacity: 1;
+}
+
+/* -------------------------------------------------------------------- */
+/*  Cards row spacing / metadata                                        */
+/* -------------------------------------------------------------------- */
+
+.video-card-row {
+  transition: color var(--iv-transition-fast);
+}
+
+p.channel-name,
+p.video-data {
+  color: var(--iv-text-secondary);
+}
+
+/* -------------------------------------------------------------------- */
+/*  Feed / preference menus                                              */
+/* -------------------------------------------------------------------- */
+
+.feed-menu-item > a {
+  display: inline-block;
+  padding: 0.35em 0.9em;
+  border-radius: 999px;
+  transition: background-color var(--iv-transition-fast), transform var(--iv-transition-fast);
+}
+
+.feed-menu-item > a:hover {
+  background-color: var(--iv-surface-raised);
+  transform: translateY(-1px);
+}
+
+/* -------------------------------------------------------------------- */
+/*  Details / summary micro-interaction (music info, error details...)  */
+/* -------------------------------------------------------------------- */
+
+summary {
+  cursor: pointer;
+  transition: color var(--iv-transition-fast);
+}
+
+/* -------------------------------------------------------------------- */
+/*  Scroll reveal (opt-in, added by ui-enhancements.js)                  */
+/* -------------------------------------------------------------------- */
+
+.iv-reveal {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.iv-reveal.iv-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 420ms ease, transform 420ms ease;
+}
+
+/* -------------------------------------------------------------------- */
+/*  Footer                                                               */
+/* -------------------------------------------------------------------- */
+
+footer {
+  border-top: 1px solid var(--iv-border);
+}
+
+/* -------------------------------------------------------------------- */
+/*  Mobile-first tweaks                                                  */
+/* -------------------------------------------------------------------- */
+
+@media screen and (max-width: 767px) {
+  /* Bigger touch targets */
+  .pure-button-primary,
+  .pure-button-secondary {
+    padding: 0.65em 1em;
+  }
+
+  .user-field a,
+  .user-field button {
+    padding: 0.4em;
+  }
+
+  .navbar {
+    gap: 0.5em;
+  }
+}
