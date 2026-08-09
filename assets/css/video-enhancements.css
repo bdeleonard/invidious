@@ -38,6 +38,9 @@
 body.iv-theater #contents {
   width: 100% !important;
   max-width: 100% !important;
+  padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: border-box;
 }
 
 body.iv-theater #player-container ~ .pure-g > .pure-u-lg-1-5 {

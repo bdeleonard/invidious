@@ -178,7 +178,7 @@ body.no-theme .navbar {
   top: 0;
   z-index: 500;
   background-color: var(--iv-bg);
-  padding: 0.5em 0;
+  padding: 0.5em 1.25rem;
   transition: box-shadow var(--iv-transition), background-color var(--iv-transition);
 }
 
@@ -263,7 +263,13 @@ body.iv-scrolled .navbar {
   margin: 0.5em 0;
 }
 
+.searchbar .pure-form {
+  align-items: center;
+}
+
 .searchbar input[type="search"] {
+  box-sizing: border-box;
+  height: 2.4em;
   border-radius: var(--iv-radius-lg) !important;
   border: 1px solid var(--iv-border) !important;
   padding: 0.5em 1em !important;
@@ -280,6 +286,13 @@ body.iv-scrolled .navbar {
 }
 
 .searchbar #searchbutton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 2.4em;
+  height: 2.4em;
+  padding: 0;
   border-radius: 50%;
   transition: background-color var(--iv-transition-fast), color var(--iv-transition-fast);
 }
