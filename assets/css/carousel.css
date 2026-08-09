@@ -117,3 +117,28 @@ DEALINGS IN THE SOFTWARE.
         background-color: #0005;
     }
 }
+
+/* ---------------------------------------------------------------------
+ * Additive fork polish: theme-aware radius + a shorter, responsive slide
+ * height so multi-image comment attachments don't tower over phones.
+ * --------------------------------------------------------------------- */
+
+.slides-item {
+    border-radius: var(--iv-radius-md, 12px);
+}
+
+.slider-nav {
+    transition: transform 120ms ease, opacity 120ms ease;
+}
+
+.slider-nav:hover {
+    transform: scale(1.1);
+}
+
+@media screen and (max-width: 767px) {
+    .slides-item {
+        height: 320px;
+        font-size: 60px;
+    }
+}
+

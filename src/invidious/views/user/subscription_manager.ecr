@@ -28,7 +28,7 @@
 
 <% subscriptions.each do |channel| %>
     <div class="h-box">
-        <div class="pure-g<% if channel.deleted %> deleted <% end %>">
+        <div class="pure-g iv-sub-row<% if channel.deleted %> deleted <% end %>">
             <div class="pure-u-2-5">
                 <h3 style="padding-left:0.5em">
                     <a href="/channel/<%= channel.id %>"><%= HTML.escape(channel.author) %></a>

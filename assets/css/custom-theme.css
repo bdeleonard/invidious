@@ -187,6 +187,82 @@ body.iv-scrolled .navbar {
   box-shadow: var(--iv-shadow-sm);
 }
 
+.index-link {
+  font-size: 1.3em;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--iv-text), var(--iv-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* -------------------------------------------------------------------- */
+/*  Mobile nav toggle (CSS-only checkbox hack, no JS needed)            */
+/* -------------------------------------------------------------------- */
+
+.iv-nav-toggle-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.iv-nav-toggle-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.2em;
+  height: 2.2em;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2em;
+  transition: background-color var(--iv-transition-fast);
+}
+
+.iv-nav-toggle-btn:hover {
+  background-color: var(--iv-surface-raised);
+}
+
+.iv-nav-toggle-input:focus-visible ~ .iv-nav-toggle-btn {
+  outline: 2px solid var(--iv-accent);
+  outline-offset: 2px;
+}
+
+@media screen and (max-width: 767px) {
+  .navbar {
+    flex-wrap: nowrap !important;
+  }
+
+  .iv-nav-toggle-btn {
+    display: flex;
+    position: absolute;
+    top: 0.4em;
+    right: 0.6em;
+    z-index: 10;
+  }
+
+  .iv-nav-collapsible {
+    display: none !important;
+  }
+
+  .iv-nav-toggle-input:checked ~ .iv-nav-collapsible {
+    display: flex !important;
+  }
+}
+
+/* -------------------------------------------------------------------- */
+/*  Announcement banner (CONFIG.banner)                                  */
+/* -------------------------------------------------------------------- */
+
+.iv-banner {
+  background: linear-gradient(135deg, var(--iv-accent), var(--iv-accent-strong));
+  border-radius: var(--iv-radius-md);
+  color: #fff;
+}
+
+.iv-banner h3 {
+  margin: 0.5em 0;
+}
+
 .searchbar input[type="search"] {
   border-radius: var(--iv-radius-lg) !important;
   border: 1px solid var(--iv-border) !important;
@@ -376,6 +452,205 @@ footer {
 }
 
 /* -------------------------------------------------------------------- */
+/*  Typography                                                           */
+/* -------------------------------------------------------------------- */
+
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.01em;
+}
+
+a {
+  transition: color var(--iv-transition-fast);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--iv-border);
+  margin: 1.25em 0;
+}
+
+/* -------------------------------------------------------------------- */
+/*  Forms - fieldsets become cards, inputs/selects get a shared look.   */
+/*  Scoped to `.pure-form` so the unrelated search-filters form (which   */
+/*  intentionally uses `display: contents` fieldsets) is untouched.     */
+/* -------------------------------------------------------------------- */
+
+.pure-form fieldset {
+  background: var(--iv-surface);
+  border: 1px solid var(--iv-border);
+  border-radius: var(--iv-radius-md);
+  padding: 1.4em 1.6em 1.6em;
+  margin-bottom: 1.5em;
+}
+
+.pure-form legend {
+  font-weight: 600;
+  font-size: 1.1em;
+  padding: 0 0.3em;
+  margin: 0 0 0.6em -0.3em;
+  width: auto;
+  border: none !important;
+}
+
+.pure-form .pure-control-group {
+  margin-bottom: 0.9em;
+}
+
+.pure-form input[type="text"],
+.pure-form input[type="password"],
+.pure-form input[type="search"],
+.pure-form input[type="email"],
+.pure-form select,
+.pure-form textarea {
+  background: var(--iv-bg);
+  color: var(--iv-text);
+  border: 1px solid var(--iv-border) !important;
+  border-radius: var(--iv-radius-sm);
+  transition: border-color var(--iv-transition-fast), box-shadow var(--iv-transition-fast);
+}
+
+.pure-form input[type="text"]:focus,
+.pure-form input[type="password"]:focus,
+.pure-form input[type="search"]:focus,
+.pure-form input[type="email"]:focus,
+.pure-form select:focus,
+.pure-form textarea:focus {
+  border-color: var(--iv-accent) !important;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(62, 166, 255, 0.2);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--iv-accent) 20%, transparent);
+}
+
+/* Re-tint native controls instead of fully re-skinning them: cheap and robust */
+.pure-form input[type="checkbox"],
+.pure-form input[type="radio"],
+.pure-form input[type="range"] {
+  accent-color: var(--iv-accent);
+}
+
+.pure-form input[type="checkbox"],
+.pure-form input[type="radio"] {
+  width: 1.15em;
+  height: 1.15em;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.pure-form-message-inline {
+  color: var(--iv-text-secondary);
+}
+
+/* -------------------------------------------------------------------- */
+/*  Pill / tab navigation (channel tabs, sort-by, subscription manager) */
+/* -------------------------------------------------------------------- */
+
+.pure-md-1-3 {
+  display: inline-block;
+}
+
+.pure-md-1-3 > a,
+.pure-md-1-3 > b {
+  display: inline-block;
+  padding: 0.4em 0.9em;
+  margin: 0.2em 0.2em 0.2em 0;
+  border-radius: 999px;
+  transition: background-color var(--iv-transition-fast), color var(--iv-transition-fast);
+}
+
+.pure-md-1-3 > a:hover {
+  background-color: var(--iv-surface-raised);
+}
+
+.pure-md-1-3 > b {
+  background-color: var(--iv-accent);
+  color: #fff;
+}
+
+/* -------------------------------------------------------------------- */
+/*  Subscribe button                                                     */
+/* -------------------------------------------------------------------- */
+
+#subscribe {
+  border-radius: 999px !important;
+  transition: transform var(--iv-transition-fast), filter var(--iv-transition-fast);
+}
+
+#subscribe:hover {
+  filter: brightness(1.08);
+}
+
+#subscribe[data-type="unsubscribe"] {
+  background-color: transparent !important;
+  color: var(--iv-text) !important;
+  border: 1px solid var(--iv-border) !important;
+}
+
+/* -------------------------------------------------------------------- */
+/*  Channel header                                                       */
+/* -------------------------------------------------------------------- */
+
+.channel-profile > img {
+  border-radius: 50%;
+  border: 2px solid var(--iv-surface-raised);
+}
+
+#descriptionWrapper {
+  color: var(--iv-text-secondary);
+  line-height: 1.55;
+}
+
+/* -------------------------------------------------------------------- */
+/*  Comments (watch page + community/post pages)                        */
+/* -------------------------------------------------------------------- */
+
+#comments {
+  gap: 0.75em 0;
+}
+
+#comments > .pure-g {
+  background: var(--iv-surface);
+  border-radius: var(--iv-radius-md);
+  padding: 1em;
+  margin-bottom: 0.75em;
+  transition: background-color var(--iv-transition-fast);
+}
+
+#comments #replies,
+#comments .pure-g .pure-g {
+  background: transparent;
+  padding: 0.5em 0 0 0;
+  margin: 0;
+}
+
+/* -------------------------------------------------------------------- */
+/*  Homepage / search hero                                               */
+/* -------------------------------------------------------------------- */
+
+#search-widget {
+  padding-top: 8vh;
+}
+
+#search-widget #logo > h1 {
+  text-align: center;
+  font-size: 2.75em;
+  font-weight: 700;
+  margin-bottom: 0.6em;
+  background: linear-gradient(135deg, var(--iv-text), var(--iv-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* -------------------------------------------------------------------- */
+/*  Error / informational pages                                         */
+/* -------------------------------------------------------------------- */
+
+.error-card {
+  border-radius: var(--iv-radius-md);
+  background: var(--iv-surface);
+}
+
+/* -------------------------------------------------------------------- */
 /*  Mobile-first tweaks                                                  */
 /* -------------------------------------------------------------------- */
 
@@ -394,4 +669,210 @@ footer {
   .navbar {
     gap: 0.5em;
   }
+
+  .pure-form fieldset {
+    padding: 1.1em 1.2em 1.3em;
+  }
+
+  #search-widget {
+    padding-top: 2vh;
+  }
+
+  #search-widget #logo > h1 {
+    font-size: 2em;
+  }
+
+  .pure-md-1-3 {
+    font-size: 0.95em;
+  }
+}
+
+/* -------------------------------------------------------------------- */
+/*  Notification bell badge                                              */
+/* -------------------------------------------------------------------- */
+
+#notification_count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.35em;
+  height: 1.35em;
+  padding: 0 0.3em;
+  margin-right: 0.2em;
+  border-radius: 999px;
+  background: var(--iv-accent);
+  color: #fff;
+  font-size: 0.72em;
+  font-weight: 700;
+  vertical-align: text-top;
+}
+
+/* -------------------------------------------------------------------- */
+/*  Search filters box (overrides the flat colors from search.css)      */
+/* -------------------------------------------------------------------- */
+
+body.dark-theme #filters-box,
+body.light-theme #filters-box,
+body.no-theme #filters-box {
+  background: var(--iv-surface);
+  border: 1px solid var(--iv-border);
+  border-radius: var(--iv-radius-md);
+}
+
+#filters-collapse summary {
+  font-weight: 600;
+}
+
+/* Replace the "[ + ]" / "[ - ]" text markers with an animated chevron */
+#filters-collapse summary:before {
+  content: "";
+  display: inline-block;
+  box-sizing: border-box;
+  width: 0.5em;
+  height: 0.5em;
+  margin: 0 0.6em 0.15em 0.2em;
+  padding: 0;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform var(--iv-transition-fast);
+}
+
+#filters-collapse details[open] > summary:before {
+  transform: rotate(-135deg);
+}
+
+.filter-name {
+  font-weight: 600;
+  color: var(--iv-text-secondary);
+}
+
+/* -------------------------------------------------------------------- */
+/*  Playlist / mix sidebar (also used standalone on /playlist, /mix)    */
+/* -------------------------------------------------------------------- */
+
+.playlist-restricted {
+  background: var(--iv-surface);
+  border-radius: var(--iv-radius-md);
+  padding: 0.6em;
+}
+
+.playlist-restricted .pure-menu-item {
+  border-radius: var(--iv-radius-sm);
+  padding: 0.35em;
+  margin-bottom: 0.25em;
+  transition: background-color var(--iv-transition-fast);
+}
+
+.playlist-restricted .pure-menu-item:hover {
+  background-color: var(--iv-surface-raised);
+}
+
+/* Lay the queue rows out like a modern "up next" list: thumbnail + text */
+.playlist-restricted .pure-menu-item > a {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6em;
+}
+
+.playlist-restricted .pure-menu-item > a > div.thumbnail {
+  flex: 0 0 40%;
+}
+
+/* -------------------------------------------------------------------- */
+/*  Feed toolbars (history/subscriptions/playlists stat + action bar)   */
+/* -------------------------------------------------------------------- */
+
+.iv-stat-bar {
+  background: var(--iv-surface);
+  border: 1px solid var(--iv-border);
+  border-radius: var(--iv-radius-md);
+  padding: 0.5em 0.25em;
+  margin-bottom: 1em;
+}
+
+.iv-stat-bar h3 {
+  margin: 0;
+  font-size: 1em;
+  font-weight: 500;
+}
+
+/* -------------------------------------------------------------------- */
+/*  Watch page sidebar info card (youtube/instance/embed/annotations)   */
+/* -------------------------------------------------------------------- */
+
+.iv-info-card {
+  background: var(--iv-surface);
+  border: 1px solid var(--iv-border);
+  border-radius: var(--iv-radius-md);
+  padding: 1em 1.2em;
+  margin-bottom: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+}
+
+.iv-info-card p {
+  margin: 0;
+}
+
+.playlist-restricted .pure-menu-item > a > p {
+  margin: 0.15em 0;
+  font-size: 0.85em;
+}
+
+/* -------------------------------------------------------------------- */
+/*  Metadata badges (playlist header stats: author/count/updated/privacy)*/
+/* -------------------------------------------------------------------- */
+
+.iv-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4em;
+  font-weight: 400;
+}
+
+.iv-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.25em 0.7em;
+  border-radius: 999px;
+  background: var(--iv-surface);
+  font-weight: 400;
+  font-size: 0.92em;
+}
+
+.iv-badge-privacy {
+  background: var(--iv-surface-raised);
+}
+
+/* -------------------------------------------------------------------- */
+/*  Subscription manager rows                                           */
+/* -------------------------------------------------------------------- */
+
+.iv-sub-row {
+  background: var(--iv-surface);
+  border-radius: var(--iv-radius-md);
+  padding: 0.5em 0.75em;
+  margin: 0.4em 0;
+  transition: background-color var(--iv-transition-fast);
+}
+
+.iv-sub-row:hover {
+  background: var(--iv-surface-raised);
+}
+
+/* Restate the upstream "deleted channel" tint since it has to win over the row background above */
+.iv-sub-row.deleted {
+  background-color: rgb(255, 0, 0, 0.5);
+}
+
+/* -------------------------------------------------------------------- */
+/*  Loading spinner                                                      */
+/* -------------------------------------------------------------------- */
+
+.loading {
+  color: var(--iv-accent);
 }

@@ -46,6 +46,7 @@ module Invidious::Frontend::WatchPage
       str << "<input type='hidden' name='id' value='" << video.id << "'/>\n"
       str << "<input type='hidden' name='title' value='" << HTML.escape(video.title) << "'/>\n"
 
+      str << "\t<fieldset>\n"
       str << "\t<div class=\"pure-control-group\">\n"
 
       str << "\t\t<label for='download_widget'>"
@@ -110,6 +111,7 @@ module Invidious::Frontend::WatchPage
       str << "\t<button type=\"submit\" class=\"pure-button pure-button-primary\">\n"
       str << "\t\t<b>" << I18n.translate(locale, "Download") << "</b>\n"
       str << "\t</button>\n"
+      str << "\t</fieldset>\n"
 
       str << "</form>\n"
     end
